@@ -61,7 +61,7 @@ class DestinationController extends Controller
      */
     public function show(Destination $destination)
     {
-        return redirect()->route('destinations.index');
+        return view('destinations.show', compact('destination'));
     }
 
     /**

@@ -2,7 +2,7 @@
 
 **Berdasarkan:** WORKFLOW.md  
 **Last Updated:** 2026-06-24  
-**Progress:** 88% (35/40 tasks completed)
+**Progress:** 90% (36/40 tasks completed)
 
 ---
 
@@ -83,7 +83,7 @@ Dokumen ini melacak implementasi fitur-fitur yang didefinisikan dalam WORKFLOW.m
 - [x] ✅ index.blade.php - List destinasi dengan cards
 - [x] ✅ create.blade.php - Form tambah destinasi
 - [x] ✅ edit.blade.php - Form edit destinasi
-- [ ] ❌ show.blade.php - Detail destinasi (untuk admin)
+- [x] ✅ show.blade.php - Detail destinasi (untuk admin)
 
 **File terkait:**
 - `resources/views/layouts/app.blade.php` ✅ (dengan Tailwind styling)
