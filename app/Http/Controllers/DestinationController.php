@@ -40,7 +40,7 @@ class DestinationController extends Controller
             'price' => 'required|numeric|min:0',
             'category_id' => 'required|integer|exists:categories,id',
             'location' => 'required|string|max:255',
-            'image' => 'nullable|image|max:2048',
+            'image' => 'nullable|image|max:2048|dimensions:min_width=800,min_height=600',
         ]);
 
         if ($request->hasFile('image')) {
@@ -84,7 +84,7 @@ class DestinationController extends Controller
             'price' => 'required|numeric|min:0',
             'category_id' => 'required|integer|exists:categories,id',
             'location' => 'required|string|max:255',
-            'image' => 'nullable|image|max:2048',
+            'image' => 'nullable|image|max:2048|dimensions:min_width=800,min_height=600',
         ]);
 
         if ($request->hasFile('image')) {

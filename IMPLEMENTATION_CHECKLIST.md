@@ -105,7 +105,7 @@ mkdir resources/views/layouts
 - [x] ✅ Replace image handling di update()
 - [x] ✅ Delete image handling di destroy()
 - [x] ✅ public/images directory
-- [ ] ⚠️ Image validation (2MB limit implemented, tapi belum ada dimension check)
+- [x] ✅ Image validation (2MB limit + min 800x600px dimension check)
 - [ ] ❌ Image optimization (WebP conversion)
 - [ ] ❌ Thumbnail generation
 
