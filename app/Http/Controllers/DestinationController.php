@@ -38,7 +38,7 @@ class DestinationController extends Controller
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'price' => 'required|numeric|min:0',
-            'category' => 'required|integer|exists:categories,id',
+            'category_id' => 'required|integer|exists:categories,id',
             'location' => 'required|string|max:255',
             'image' => 'nullable|image|max:2048',
         ]);
@@ -61,7 +61,7 @@ class DestinationController extends Controller
      */
     public function show(Destination $destination)
     {
-        return redirect()->route('destinations.index');
+        return view('destinations.show', compact('destination'));
     }
 
     /**
@@ -82,7 +82,7 @@ class DestinationController extends Controller
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'price' => 'required|numeric|min:0',
-            'category' => 'required|integer|exists:categories,id',
+            'category_id' => 'required|integer|exists:categories,id',
             'location' => 'required|string|max:255',
             'image' => 'nullable|image|max:2048',
         ]);

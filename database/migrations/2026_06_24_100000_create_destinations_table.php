@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('destinations', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('category')->nullable();
+            $table->foreignId('category_id')->constrained()->onDelete('restrict');
             $table->string('location')->nullable();
             $table->text('description')->nullable();
             $table->unsignedBigInteger('price')->default(0);
