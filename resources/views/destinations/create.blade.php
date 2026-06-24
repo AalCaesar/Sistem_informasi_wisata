@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Destinasi Wisata</title>
+    <title>Tambah Destinasi Wisata</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body class="bg-light">
@@ -11,7 +11,7 @@
 <div class="container mt-5">
     <div class="card shadow-sm">
         <div class="card-body">
-            <h3 class="card-title mb-4">Edit Destinasi Wisata</h3>
+            <h3 class="card-title mb-4">Tambah Destinasi Wisata</h3>
 
             @if($errors->any())
                 <div class="alert alert-danger">
@@ -23,13 +23,12 @@
                 </div>
             @endif
 
-            <form action="{{ route('destinations.update', $destination->id) }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('destinations.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
-                @method('PUT')
 
                 <div class="mb-3">
                     <label class="form-label">Nama Wisata</label>
-                    <input type="text" name="name" value="{{ old('name', $destination->name) }}" class="form-control" required>
+                    <input type="text" name="name" value="{{ old('name') }}" class="form-control" required>
                 </div>
 
                 <div class="mb-3">
@@ -37,7 +36,7 @@
                     <select name="category" class="form-select" required>
                         <option value="">-- Pilih Kategori --</option>
                         @foreach($categories as $category)
-                            <option value="{{ $category->id }}" {{ old('category', $destination->category) == $category->id ? 'selected' : '' }}>
+                            <option value="{{ $category->id }}" {{ old('category') == $category->id ? 'selected' : '' }}>
                                 {{ $category->name }}
                             </option>
                         @endforeach
@@ -46,32 +45,27 @@
 
                 <div class="mb-3">
                     <label class="form-label">Lokasi/Daerah</label>
-                    <input type="text" name="location" value="{{ old('location', $destination->location) }}" class="form-control" required>
+                    <input type="text" name="location" value="{{ old('location') }}" class="form-control" required>
                 </div>
 
                 <div class="mb-3">
                     <label class="form-label">Harga Tiket Masuk</label>
-                    <input type="number" name="price" value="{{ old('price', $destination->price) }}" class="form-control" min="0" required>
+                    <input type="number" name="price" value="{{ old('price', 0) }}" class="form-control" min="0" required>
                 </div>
 
                 <div class="mb-3">
                     <label class="form-label">Deskripsi</label>
-                    <textarea name="description" class="form-control" rows="4">{{ old('description', $destination->description) }}</textarea>
+                    <textarea name="description" class="form-control" rows="4">{{ old('description') }}</textarea>
                 </div>
 
                 <div class="mb-3">
                     <label class="form-label">Foto Wisata</label>
-                    @if($destination->image)
-                        <div class="mb-2">
-                            <img src="{{ asset('images/' . $destination->image) }}" alt="{{ $destination->name }}" class="img-fluid" style="max-height: 200px;">
-                        </div>
-                    @endif
                     <input type="file" name="image" class="form-control" accept="image/*">
                 </div>
 
                 <div class="d-flex justify-content-between">
                     <a href="{{ route('destinations.index') }}" class="btn btn-secondary">Kembali</a>
-                    <button type="submit" class="btn btn-primary">Perbarui</button>
+                    <button type="submit" class="btn btn-primary">Simpan</button>
                 </div>
             </form>
         </div>
