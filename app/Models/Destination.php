@@ -13,8 +13,11 @@ class Destination extends Model
         'name',
         'description',
         'price',
-        'category',
+        'category_id',
+        'location',
         'image',
+        'slug',
+        'is_published',
     ];
 
     protected $casts = [
