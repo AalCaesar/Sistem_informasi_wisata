@@ -17,6 +17,7 @@ class DestinationController extends Controller
     {
         $filename = time() . '_' . Str::slug(pathinfo($uploadedFile->getClientOriginalName(), PATHINFO_FILENAME)) . '.webp';
         $path = public_path('images/' . $filename);
+        $thumbPath = public_path('images/' . str_replace('.webp', '_thumb.webp', $filename));
 
         // Create image from uploaded file based on mime type
         $imageResource = match ($uploadedFile->getMimeType()) {
@@ -27,9 +28,25 @@ class DestinationController extends Controller
             default => throw new \Exception('Unsupported image type')
         };
 
-        // Convert to WebP with 85% quality
+        // Save full-size WebP with 85% quality
         imagewebp($imageResource, $path, 85);
+
+        // Generate 300x300 thumbnail
+        $originalWidth = imagesx($imageResource);
+        $originalHeight = imagesy($imageResource);
+        $thumbSize = 300;
+
+        // Calculate thumbnail dimensions (maintain aspect ratio, crop to square)
+        $size = min($originalWidth, $originalHeight);
+        $x = ($originalWidth - $size) / 2;
+        $y = ($originalHeight - $size) / 2;
+
+        $thumb = imagecreatetruecolor($thumbSize, $thumbSize);
+        imagecopyresampled($thumb, $imageResource, 0, 0, $x, $y, $thumbSize, $thumbSize, $size, $size);
+        imagewebp($thumb, $thumbPath, 85);
+
         imagedestroy($imageResource);
+        imagedestroy($thumb);
 
         return $filename;
     }
@@ -111,6 +128,11 @@ class DestinationController extends Controller
         if ($request->hasFile('image')) {
             if ($destination->image && File::exists(public_path('images/' . $destination->image))) {
                 File::delete(public_path('images/' . $destination->image));
+                // Delete thumbnail if exists
+                $thumbPath = str_replace('.webp', '_thumb.webp', $destination->image);
+                if (File::exists(public_path('images/' . $thumbPath))) {
+                    File::delete(public_path('images/' . $thumbPath));
+                }
             }
 
             $data['image'] = $this->processImage($request->file('image'));
@@ -129,6 +151,11 @@ class DestinationController extends Controller
     {
         if ($destination->image && File::exists(public_path('images/' . $destination->image))) {
             File::delete(public_path('images/' . $destination->image));
+            // Delete thumbnail if exists
+            $thumbPath = str_replace('.webp', '_thumb.webp', $destination->image);
+            if (File::exists(public_path('images/' . $thumbPath))) {
+                File::delete(public_path('images/' . $thumbPath));
+            }
         }
 
         $destination->delete();
