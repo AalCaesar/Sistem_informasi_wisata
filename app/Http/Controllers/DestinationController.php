@@ -11,6 +11,30 @@ use Illuminate\Support\Str;
 class DestinationController extends Controller
 {
     /**
+     * Process and optimize uploaded image to WebP format
+     */
+    private function processImage($uploadedFile): string
+    {
+        $filename = time() . '_' . Str::slug(pathinfo($uploadedFile->getClientOriginalName(), PATHINFO_FILENAME)) . '.webp';
+        $path = public_path('images/' . $filename);
+
+        // Create image from uploaded file based on mime type
+        $imageResource = match ($uploadedFile->getMimeType()) {
+            'image/jpeg', 'image/jpg' => imagecreatefromjpeg($uploadedFile->getPathname()),
+            'image/png' => imagecreatefrompng($uploadedFile->getPathname()),
+            'image/gif' => imagecreatefromgif($uploadedFile->getPathname()),
+            'image/webp' => imagecreatefromwebp($uploadedFile->getPathname()),
+            default => throw new \Exception('Unsupported image type')
+        };
+
+        // Convert to WebP with 85% quality
+        imagewebp($imageResource, $path, 85);
+        imagedestroy($imageResource);
+
+        return $filename;
+    }
+
+    /**
      * Display a listing of the resource.
      */
     public function index()
@@ -44,10 +68,7 @@ class DestinationController extends Controller
         ]);
 
         if ($request->hasFile('image')) {
-            $image = $request->file('image');
-            $filename = time() . '_' . Str::slug(pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME)) . '.' . $image->extension();
-            $image->move(public_path('images'), $filename);
-            $data['image'] = $filename;
+            $data['image'] = $this->processImage($request->file('image'));
         }
 
         Destination::create($data);
@@ -92,10 +113,7 @@ class DestinationController extends Controller
                 File::delete(public_path('images/' . $destination->image));
             }
 
-            $image = $request->file('image');
-            $filename = time() . '_' . Str::slug(pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME)) . '.' . $image->extension();
-            $image->move(public_path('images'), $filename);
-            $data['image'] = $filename;
+            $data['image'] = $this->processImage($request->file('image'));
         }
 
         $destination->update($data);
