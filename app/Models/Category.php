@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Category extends Model
 {
@@ -11,7 +12,7 @@ class Category extends Model
     protected static function boot()
     {
         parent::boot();
-        static::creating(fn($category) => $category->slug = \Illuminate\Support\Str::slug($category->name));
+        static::creating(fn ($category) => $category->slug = Str::slug($category->name));
     }
 
     public function destinations()
