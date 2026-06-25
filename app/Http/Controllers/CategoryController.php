@@ -7,9 +7,18 @@ use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:view-categories')->only(['index']);
+        $this->middleware('permission:create-categories')->only(['create', 'store']);
+        $this->middleware('permission:edit-categories')->only(['edit', 'update']);
+        $this->middleware('permission:delete-categories')->only(['destroy']);
+    }
+
     public function index()
     {
         $categories = Category::withCount('destinations')->latest()->get();
+
         return view('categories.index', compact('categories'));
     }
 
@@ -39,7 +48,7 @@ class CategoryController extends Controller
     public function update(Request $request, Category $category)
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255|unique:categories,name,' . $category->id,
+            'name' => 'required|string|max:255|unique:categories,name,'.$category->id,
             'description' => 'nullable|string|max:1000',
         ]);
 
