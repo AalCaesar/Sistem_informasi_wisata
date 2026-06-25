@@ -2,7 +2,7 @@
 
 **Berdasarkan:** WORKFLOW.md  
 **Last Updated:** 2026-06-25  
-**Progress:** 93% (37/40 tasks completed) ✅ VERIFIED
+**Progress:** 95% (38/40 tasks completed) ✅ VERIFIED
 
 ---
 
@@ -191,14 +191,27 @@ php artisan migrate
 
 ### 4.3 Route Protection dengan Middleware
 - [x] ✅ Apply auth middleware ke admin routes
-- [ ] ❌ Apply permission middleware ke CRUD operations (menunggu Spatie Permission)
-- [ ] ❌ Create middleware untuk role checking (menunggu Spatie Permission)
-- [x] ✅ Protect destinations routes (auth middleware applied)
-- [x] ✅ Protect categories routes (auth middleware applied)
+- [x] ✅ Apply permission middleware to CRUD operations
+- [x] ✅ Protect destinations routes (auth + permission middleware)
+- [x] ✅ Protect categories routes (auth + permission middleware)
 
-**Status:** Basic auth protection ✅ Complete | Role-based ❌ Waiting for Spatie
+**Status:** ✅ Complete (2026-06-25)
 
-**Verified:** Routes web.php lines 16-24 - auth middleware melindungi categories & destinations
+**Implementation:**
+- Auth middleware: Applied in [routes/web.php:16-24](routes/web.php#L16-L24)
+- Permission middleware: Applied in controllers using constructor pattern
+
+**Destinations Protection** ([app/Http/Controllers/DestinationController.php](app/Http/Controllers/DestinationController.php)):
+- `view-destinations`: index, show
+- `create-destinations`: create, store
+- `edit-destinations`: edit, update
+- `delete-destinations`: destroy
+
+**Categories Protection** ([app/Http/Controllers/CategoryController.php](app/Http/Controllers/CategoryController.php)):
+- `view-categories`: index
+- `create-categories`: create, store
+- `edit-categories`: edit, update
+- `delete-categories`: destroy
 
 ---
 
@@ -342,7 +355,7 @@ php artisan test --compact
 
 ## ✅ Summary Completion Status
 
-**Progress: 93%** (37/40 tasks complete) - Verified 2026-06-25
+**Progress: 95%** (38/40 tasks complete) - Verified 2026-06-25
 
 ### 🎉 Completed This Session:
 
@@ -425,7 +438,7 @@ php artisan test --compact
 
 ## 📊 Verification Summary (2026-06-25)
 
-**Actual Progress:** 37/40 tasks = 93%
+**Actual Progress:** 38/40 tasks = 95%
 
 **Database Status:**
 - ✅ 5 migrations ran successfully (+ permission tables)
@@ -438,6 +451,7 @@ php artisan test --compact
 **Routes Status:**
 - ✅ 34 routes registered (Breeze auth + resource routes)
 - ✅ Auth middleware protecting admin routes
+- ✅ Permission middleware protecting CRUD operations
 - ✅ Breeze auth flow complete
 
 **Role & Permission System:**
@@ -445,11 +459,12 @@ php artisan test --compact
 - ✅ User model with HasRoles trait
 - ✅ RolePermissionSeeder created and run
 - ✅ 3 roles with proper permission assignments
+- ✅ Controllers protected with permission middleware
 
 **Next Major Phase:**
 - Build Admin Dashboard with statistics (Phase 5) - 7 tasks
 - Create Public Features (Phase 6) - 11 tasks  
 - Add Pest Tests (Phase 8) - 8 tasks
 
-**Estimated Time to MVP:** 2-3 hours (Dashboard + basic public views)
-**Estimated Time to Full Implementation:** 8-10 hours remaining
+**Estimated Time to MVP:** 2-3 hours (Dashboard)
+**Estimated Time to Full Implementation:** 6-8 hours remaining

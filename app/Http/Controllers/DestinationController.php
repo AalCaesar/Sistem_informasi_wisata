@@ -10,14 +10,22 @@ use Illuminate\Support\Str;
 
 class DestinationController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:view-destinations')->only(['index', 'show']);
+        $this->middleware('permission:create-destinations')->only(['create', 'store']);
+        $this->middleware('permission:edit-destinations')->only(['edit', 'update']);
+        $this->middleware('permission:delete-destinations')->only(['destroy']);
+    }
+
     /**
      * Process and optimize uploaded image to WebP format
      */
     private function processImage($uploadedFile): string
     {
-        $filename = time() . '_' . Str::slug(pathinfo($uploadedFile->getClientOriginalName(), PATHINFO_FILENAME)) . '.webp';
-        $path = public_path('images/' . $filename);
-        $thumbPath = public_path('images/' . str_replace('.webp', '_thumb.webp', $filename));
+        $filename = time().'_'.Str::slug(pathinfo($uploadedFile->getClientOriginalName(), PATHINFO_FILENAME)).'.webp';
+        $path = public_path('images/'.$filename);
+        $thumbPath = public_path('images/'.str_replace('.webp', '_thumb.webp', $filename));
 
         // Create image from uploaded file based on mime type
         $imageResource = match ($uploadedFile->getMimeType()) {
@@ -67,6 +75,7 @@ class DestinationController extends Controller
     public function create()
     {
         $categories = Category::orderBy('name')->get();
+
         return view('destinations.create', compact('categories'));
     }
 
@@ -108,6 +117,7 @@ class DestinationController extends Controller
     public function edit(Destination $destination)
     {
         $categories = Category::orderBy('name')->get();
+
         return view('destinations.edit', compact('destination', 'categories'));
     }
 
@@ -126,12 +136,12 @@ class DestinationController extends Controller
         ]);
 
         if ($request->hasFile('image')) {
-            if ($destination->image && File::exists(public_path('images/' . $destination->image))) {
-                File::delete(public_path('images/' . $destination->image));
+            if ($destination->image && File::exists(public_path('images/'.$destination->image))) {
+                File::delete(public_path('images/'.$destination->image));
                 // Delete thumbnail if exists
                 $thumbPath = str_replace('.webp', '_thumb.webp', $destination->image);
-                if (File::exists(public_path('images/' . $thumbPath))) {
-                    File::delete(public_path('images/' . $thumbPath));
+                if (File::exists(public_path('images/'.$thumbPath))) {
+                    File::delete(public_path('images/'.$thumbPath));
                 }
             }
 
@@ -149,12 +159,12 @@ class DestinationController extends Controller
      */
     public function destroy(Destination $destination)
     {
-        if ($destination->image && File::exists(public_path('images/' . $destination->image))) {
-            File::delete(public_path('images/' . $destination->image));
+        if ($destination->image && File::exists(public_path('images/'.$destination->image))) {
+            File::delete(public_path('images/'.$destination->image));
             // Delete thumbnail if exists
             $thumbPath = str_replace('.webp', '_thumb.webp', $destination->image);
-            if (File::exists(public_path('images/' . $thumbPath))) {
-                File::delete(public_path('images/' . $thumbPath));
+            if (File::exists(public_path('images/'.$thumbPath))) {
+                File::delete(public_path('images/'.$thumbPath));
             }
         }
 
