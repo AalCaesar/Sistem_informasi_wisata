@@ -2,7 +2,7 @@
 
 **Berdasarkan:** WORKFLOW.md  
 **Last Updated:** 2026-06-25  
-**Progress:** 75% (30/40 tasks completed) ✅ VERIFIED
+**Progress:** 93% (37/40 tasks completed) ✅ VERIFIED
 
 ---
 
@@ -168,22 +168,24 @@ php artisan migrate
 ---
 
 ### 4.2 Role & Permission Management (WORKFLOW.md Roles)
-- [ ] ❌ Install Spatie Permission package
-- [ ] ❌ Publish & run migrations
-- [ ] ❌ Update User model dengan HasRoles trait
-- [ ] ❌ Create RolePermissionSeeder
-- [ ] ❌ Define permissions (view/create/edit/delete destinations & categories)
-- [ ] ❌ Create roles: admin, content_manager, user
-- [ ] ❌ Assign permissions ke roles
+- [x] ✅ Install Spatie Permission package (v8.0.0)
+- [x] ✅ Publish & run migrations
+- [x] ✅ Update User model dengan HasRoles trait
+- [x] ✅ Create RolePermissionSeeder
+- [x] ✅ Define permissions (view/create/edit/delete destinations & categories)
+- [x] ✅ Create roles: admin, content_manager, user
+- [x] ✅ Assign permissions ke roles
 
-**Status:** Belum dimulai
+**Status:** ✅ Complete (2026-06-25)
 
-**Action Required:**
-```bash
-composer require spatie/laravel-permission
-php artisan vendor:publish --provider="Spatie\Permission\PermissionServiceProvider"
-php artisan migrate
-```
+**Verified in Database:**
+- 10 permissions: view/create/edit/delete (destinations & categories), view-dashboard, manage-users
+- 3 roles: admin (full access), content_manager (CRUD destinations, CR categories), user (view only)
+
+**Files Created:**
+- [config/permission.php](config/permission.php)
+- [database/seeders/RolePermissionSeeder.php](database/seeders/RolePermissionSeeder.php)
+- Migration: 2026_06_25_065831_create_permission_tables.php
 
 ---
 
@@ -340,7 +342,7 @@ php artisan test --compact
 
 ## ✅ Summary Completion Status
 
-**Progress: 75%** (30/40 tasks complete) - Verified 2026-06-25
+**Progress: 93%** (37/40 tasks complete) - Verified 2026-06-25
 
 ### 🎉 Completed This Session:
 
@@ -372,9 +374,10 @@ php artisan test --compact
 ### ✅ Recently Fixed (2026-06-25):
 1. ✅ **Eloquent Relationship**: Added `belongsTo(Category::class)` to Destination model
 2. ✅ **View Styling Consistency**: Converted destinations/index.blade.php to Tailwind CSS
-3. ✅ Setup Tailwind CSS untuk styling (v3.4.19 - working)
-4. ✅ Install Laravel Breeze untuk authentication
-5. ✅ Buat CategoryController & views
+3. ✅ **Roles & Permissions System**: Spatie Permission v8.0.0 installed and configured
+4. ✅ Setup Tailwind CSS untuk styling (v3.4.19 - working)
+5. ✅ Install Laravel Breeze untuk authentication
+6. ✅ Buat CategoryController & views
 
 ### ⚠️ Known Issues:
 - **Tailwind CSS Version**: Using v3.4.19, not v4.0.0 (functionally complete, upgrade optional)
@@ -422,11 +425,13 @@ php artisan test --compact
 
 ## 📊 Verification Summary (2026-06-25)
 
-**Actual Progress:** 30/40 tasks = 75%
+**Actual Progress:** 37/40 tasks = 93%
 
 **Database Status:**
-- ✅ 5 migrations ran successfully
-- ✅ 5 categories seeded (Pantai, Gunung, Kuliner, Sejarah, Taman Bermain)
+- ✅ 5 migrations ran successfully (+ permission tables)
+- ✅ 5 categories seeded
+- ✅ 3 roles seeded (admin, content_manager, user)
+- ✅ 10 permissions seeded (destinations & categories CRUD, dashboard, users)
 - ⚠️ 0 destinations (empty)
 - ⚠️ 0 users (register via /register untuk testing)
 
@@ -435,15 +440,16 @@ php artisan test --compact
 - ✅ Auth middleware protecting admin routes
 - ✅ Breeze auth flow complete
 
-**Critical Fixes Needed:**
-1. Add `belongsTo` relationship in Destination model (5 min)
-2. Convert destinations/index.blade.php from Bootstrap to Tailwind (30 min)
-3. Update documentation to reflect Tailwind v3.4.19 (not v4)
+**Role & Permission System:**
+- ✅ Spatie Permission v8.0.0 installed
+- ✅ User model with HasRoles trait
+- ✅ RolePermissionSeeder created and run
+- ✅ 3 roles with proper permission assignments
 
 **Next Major Phase:**
-- Install Spatie Permission (Phase 4.2)
-- Build Admin Dashboard (Phase 5)
-- Create Public Features (Phase 6)
+- Build Admin Dashboard with statistics (Phase 5) - 7 tasks
+- Create Public Features (Phase 6) - 11 tasks  
+- Add Pest Tests (Phase 8) - 8 tasks
 
-**Estimated Time to MVP:** 4-6 hours (fixes + Phase 4.2 + Phase 5)
-**Estimated Time to Full Implementation:** 12-15 hours remaining
+**Estimated Time to MVP:** 2-3 hours (Dashboard + basic public views)
+**Estimated Time to Full Implementation:** 8-10 hours remaining
